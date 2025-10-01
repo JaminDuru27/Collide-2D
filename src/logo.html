@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Collision Manager</title>
+    <link rel="stylesheet" href="./index.css">
+    <style>
+        @font-face {
+            font-family: font;
+            src: url(./assets/fonts/Geoform-Light.otf);
+        }
+        *{font-family:font; box-sizing: border-box;margin: 0;padding: 0;}
+        body{
+            background: #3e004b;
+            background-image: radial-gradient(#d76cb3 9%, transparent);
+        }
+        body::before{
+            content: '';
+            width: 10rem;
+            height: 10rem;
+            background: linear-gradient(45deg, purple, purple);
+            filter: blur(16px);
+            position: absolute;
+            box-shadow: 0px 8px 15px -2px #0000005e;
+            top: 50px;
+            left: 50px; animation: 3s infinite updown ;
+        }
+        body::after{
+            content: '';
+            z-index: -1;
+            width: 30rem;
+            height: 30rem;
+            background: linear-gradient(45deg, rgb(200 93 200), #640f64);
+            filter: blur(16px);
+            position: absolute;
+            box-shadow: 0px 8px 15px -2px #0000005e;
+            top: 50px;
+            right: 50px;
+            animation: 6s infinite updown ;
+        }
+        .bg{
+            width: 100%; z-index: 10;
+            height: 100vh;
+            backdrop-filter: grayscale(1);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            animation: .6s greytocolor forwards;
+            animation-delay: 3s ;
+        }
+        .text{
+            font-size: 3rem; margin-top: .5rem;
+            text-shadow: 2px 3px 13px black;
+            text-transform: capitalize;
+        }
+        .wrap{
+            backdrop-filter: blur(5px);
+            padding: 2rem; border-radius: .5rem;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            animation: 6s rise forwards;
+        }
+        .wrap::after{
+            content: '';
+            width: 5rem;
+            height: 5rem;
+            background: radial-gradient(112px 35px, transparent -20%, #ffffff45 89%);
+            position: absolute;
+            top: 50px;
+            right: 50px;
+            border-radius: 50%;
+        }
+        .wrap::before{
+            content: '';
+            width: 2rem;
+            height: 2rem;
+            background: radial-gradient(112px 35px, transparent -20%, #ffffff45 89%);
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            border-radius: 50%;
+        }
+        .c{
+            color: purple
+        }
+        .logo{
+            width: 15rem;
+            height: 15rem;
+            border-radius: 50%;
+            background: radial-gradient(#ffffff65, transparent);
+        }
+        @keyframes rise {
+            from{
+                transform: translateY(70px);
+            }
+            to{
+                transform: translateY(0);
+            }
+        }
+        @keyframes greytocolor {
+            from{
+                backdrop-filter: grayscale(1);
+            }
+            to{
+                backdrop-filter: grayscale(0);
+            }
+        }
+        @keyframes updown {
+            0%{
+                transform: translateY(-50px);
+            }
+            25%{
+                transform: translateY(0px);
+            }
+            50%{
+                transform: translateY(50px);
+            }
+            100%{
+                transform: translateY(0px);
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="bg">
+        <div class="wrap">
+            <div class="logo"></div>
+            <h1 class="text">Your <span class="c">collision Manager</span></h1>
+            <div class="" style="text-align: center; margin-top: .5rem;">build exciting an detailed projects using our 2d game dev website</div>
+        </div>
+    </div>
+    <script>
+        setTimeout(()=>{
+            window.location.href = `/home`
+        }, 4000)
+    </script>
+</body>
+</html>

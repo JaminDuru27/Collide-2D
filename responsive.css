@@ -1,0 +1,27 @@
+@media (max-width: 500px){
+  *{
+    font-size: 50%
+  }
+  body{
+    width: 0%;
+  }
+  .feedback{
+    font-size: 1.2rem !important;
+    color: red !important;
+    width: 50vw !important;
+  }
+  .sideleft, .sideright{
+    width: 40vw !important;
+  }
+  .topbar{
+    height: 4rem !important;
+    padding: 0 2rem !important;
+  }
+  .exit, .settings{
+    width: 1.2rem !important;
+    height: 1.2rem !important;
+  }
+  .menu .top{
+    font-size: 6.2rem !important
+  }
+}

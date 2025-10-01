@@ -1,0 +1,125 @@
+import { domextract } from "../../DRAW/domextract"
+import { GenerateId } from "../../../functions.js/DRAW/generateId"
+
+export function RocketMan(){
+    const res= {
+        name: 'RocketMan',
+        style(){return``},
+        togglestyle(){return `width: .5rem;height: .5rem;outline: 2px solid grey;background: #7e779e;position: absolute;left: 0.5rem;top: .5rem;border-radius: 50%;outline-offset: .1rem;`},
+        inputstyle(){return`width: 50%;color: #fff;background: #ffffff21;border: 1px solid #ffffff21;border-radius: .5rem;margin-left: .5rem;padding: .1rem;`},
+        
+        optionsId: GenerateId() + `Options`,
+        getThumbnailImage(){ //important
+            const image = new Image()
+            image.src = '../assets/images/rocketman.png'
+            return image
+        },
+        remove(){//important
+            this.element.remove()
+        },
+        updateVars({to, RocketManObject, inputstyle,Material}){
+           to.innerHTML = ``
+           SpriteManObject.variablesOfInterest.forEach((v)=>{
+                const input = this.getinputdom({inputstyle, v ,to,})
+                input.onmousedown = (e)=>{
+                    if(e.buttons === 2)
+                    Material.optionsHandler.find('globalvariablesoption').show(e)
+                }
+                input.oninput  = (e)=>{
+                    if(v.parseinput() === `number` || v.parseinput() === `string`)
+                    v.set(e.target.value)
+                }
+                input.onchange  = (e)=>{
+                    if(v.parseinput() === `checkbox`)
+                    v.set(e.target.checked)
+                }
+
+          })
+        },
+        setTogglebtn(obj){
+            if(this.togglebtn)this.togglebtn.remove()
+            this.togglebtn = document.createElement(`div`)
+            this.togglebtn.setAttribute(`style`, this.togglestyle())
+            const setbtncolor = ()=>this.togglebtn.style.background = (obj.toggle)?'#432aaa':'#2c2938'
+            setbtncolor()
+            this.togglebtn.onclick = ()=>{
+                obj.toggle = (obj.toggle)?false:true
+                this.updateToggle(obj)
+                setbtncolor()
+            }
+            this.element.append(this.togglebtn)
+        },
+        updateToggle(obj){
+            if(!obj.toggle){
+                if(this.togglediv)this.togglediv.remove()
+                this.togglediv = document.createElement(`div`)
+                this.togglediv.setAttribute(`style`, `z-index: 20; opacity: 0.4;width: 100%; height: 100%; position: absolute; top: 0; left: 0; background: #000`)
+                this.togglediv.ondblclick = ()=>{
+                    obj.toggle = true
+                    this.setTogglebtn(obj)
+                    this.updateToggle(obj)
+                }
+                this.element.append(this.togglediv)
+            }else{
+                this?.togglediv?.remove()
+            }
+        },
+        getinputdom({v, to}){
+            const div = document.createElement(`div`)
+            div.textContent = v.prop
+            div.setAttribute(`style`, `display: flex; justify-content: center; align-items: center; font-size: .6rem;`)
+            const input = document.createElement(`input`)
+            input.placeholder = v.prop
+            input.value = v.get()
+            input.type = v.parseinput()
+            input.setAttribute(`style`, this.inputstyle())
+            div.append(input)
+            to.append(div)  
+
+            return input
+        },
+        ui(to, RocketManObject, Material, Layout, Tile){
+            this.element = document.createElement(`div`)
+            this.element.setAttribute(`style`, this.style())
+            this.element.innerHTML += ``
+            to.append(this.element)
+            domextract(this.element, 'classname',this)
+            this.setTogglebtn(RocketManObject)
+            this.updateToggle(RocketManObject)
+            return this
+        },
+        setTogglebtn(obj){
+            if(this.togglebtn)this.togglebtn.remove()
+            this.togglebtn = document.createElement(`div`)
+            this.togglebtn.setAttribute(`style`, this.togglestyle())
+            const setbtncolor = ()=>this.togglebtn.style.background = (obj.toggle)?'#432aaa':'#2c2938'
+            setbtncolor()
+            this.togglebtn.onclick = ()=>{
+                obj.toggle = (obj.toggle)?false:true
+                this.updateToggle(obj)
+                setbtncolor()
+            }
+            this.element.append(this.togglebtn)
+        },
+        updateToggle(obj){
+            if(!obj.toggle){
+                if(this.togglediv)this.togglediv.remove()
+                this.togglediv = document.createElement(`div`)
+                this.togglediv.setAttribute(`style`, `z-index: 20; opacity: 0.4;width: 100%; height: 100%; position: absolute; top: 0; left: 0; background: #000`)
+                this.togglediv.ondblclick = ()=>{
+                    obj.toggle = true
+                    this.setTogglebtn(obj)
+                    this.updateToggle(obj)
+                }
+                this.element.append(this.togglediv)
+            }else{
+                this?.togglediv?.remove()
+            }
+        },
+        update(props){
+
+        }
+    }
+
+    return res
+}

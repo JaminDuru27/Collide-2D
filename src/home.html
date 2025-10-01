@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Collision Manager</title>
+    <link rel="stylesheet" href="./menu.css">
+</head>
+<body>
+    <div class="all">
+        <header id="header">
+        <nav>
+            <div class="left">
+                <div class="logo">Collide</div>
+            </div>
+            <div class="right">
+                <ul>
+                    <li><a href="/manager">Start Creating</a></li>
+                    <li><a href="#">GitHub</a></li>
+                    <li><a href="#">Premium</a></li>
+                </ul>
+            </div>
+        </nav>
+    </header>
+    <main>
+        <div class="showcontrols">
+            <div class="ctrlbox">
+                <div class="ctrl">&lArr; - Move Left</div>
+                <div class="ctrl">&rAarr; - Move Right</div>
+                <div class="ctrl">&uArr; - Jump</div>
+                <div class="ctrl">A Key (A) - Sprint</div>
+            </div>
+        </div>
+        <canvas class="bgs"></canvas>
+        <div class="text">
+            <div class="card" style="display: none;">
+                <!-- FIRST TEMP -->
+                <div class="temp" setStyle="left: 20px; font-size: 2rem;" style = 'display:none; '>
+                    <div class="top" >
+                        <h1>Take Map making Journey</h1>
+                        <p>Collide is a platform has avaible features for building web games like this. It offers Impressive tools for web Game Dev.</p>
+                    </div>
+                </div>
+                <!-- SECOND TEMP -->
+                <div class="temp" left="20px" style = 'display:none'>
+                    <hz>User Friendly and easy to use</h1>
+                    <h3>Free program for all </h3>
+                </div>
+                
+                <!-- THIRD TEMP -->
+                <div class="temp third flexwrap" setStyle="left: 50%; transform: translateX(-50%);" style = 'display:none'>
+                    <section>
+                        <h1>its easy to use</h1>
+                        <p style="margin-top: 1rem;">1. create a web project</p>
+                        <img src="./assets/images/player.png" alt="" class="pic">
+                        <p style="margin-top: 1rem;">2. import you image</p>
+                        <img src="./assets/images/player.png" style="width: 100%; height: 4rem;" alt="" class="pic">
+                    </section>
+                    <section>
+                        <h1>its easy to use</h1>
+                        <p style="margin-top: 1rem;">1. create a web project</p>
+                        <img src="./assets/images/player.png" alt="" class="pic">
+                        <p style="margin-top: 1rem;">2. import you image</p>
+                        <img src="./assets/images/player.png" style="width: 100%; height: 4rem;" alt="" class="pic">
+                    </section>
+                    <section>
+                        <h1>its easy to use</h1>
+                        <p style="margin-top: 1rem;">1. create a web project</p>
+                        <img src="./assets/images/player.png" alt="" class="pic">
+                        <p style="margin-top: 1rem;">2. import you image</p>
+                        <img src="./assets/images/player.png" style="width: 100%; height: 4rem;" alt="" class="pic">
+                    </section>
+                </div>
+                <!-- Fourth Temp -->
+                <div class="temp" style="font-size: 1rem; display: none; flex-direction: column;">
+                    <h2>no ideas, no worry!</h2>
+                    <p>weve got you covered!, Try the best Generative model for 2d generating basic game fast and easy</p>
+                        <img src="./assets/images/player.png" style="" alt="" class="pic">
+                </div>
+                <!-- Fifth Temp -->
+                <div class="temp" style="font-size: 1rem; display: none">
+                    <h2>Build Beatiful Stories Through Game</h2>
+                    <p style="text-transform: capitalize;">preview and upload your games for you friends to see. perfect for game jams</p>
+                    <img src="./assets/images/player.png" style="width:100%; height: 7rem" alt="" class="pic">
+                </div>
+                <!-- Sixth Temp -->
+                <div class="temp" href = '/manager' setStyle = 'left:60; height:300; font-size: 1rem; display: block;' style=" display: none">
+                    <h2>Shall we Begin?</h2>
+                    <p style="text-transform: capitalize;">start your creative journey in a click of a button</p>
+                </div>
+            </div>
+        </div>
+        <canvas class="canvas"></canvas>
+    </main>
+    <img src="./assets/images/player.png" class="player" alt="" hidden>
+    <img src="./assets/images/hills paralax/Hills Layer 01.png" class="layer1" alt="" hidden>
+    <img src="./assets/images/hills paralax/Hills Layer 02.png" class="layer2" alt="" hidden>
+    <img src="./assets/images/hills paralax/Hills Layer 03.png" class="layer3" alt="" hidden>
+    <img src="./assets/images/hills paralax/Hills Layer 04.png" class="layer4" alt="" hidden>
+    <img src="./assets/images/hills paralax/Hills Layer 05.png" class="layer5" alt="" hidden>
+    <img src="./assets/images/hills paralax/Hills Layer 06.png" class="layer6" alt="" hidden>
+    <div class="showfooter"></div>
+    <footer class="footerflex" id="footer">
+        <div class="logo">Collision Manager</div>
+        <div class="nav">
+            <div class="footercard">
+                <a href="#">my github</a>
+                <a href="/manager">Get Started</a>
+                <a href="#"><span style="color: blue">Bugs?</span> pliz send</a>
+            </div>
+            <div class="footercard">
+                <a href="#">My Port Folio</a>
+                <a href="#">My services</a>
+                <a href="#">Instagram</a>
+            </div>
+            <div class="footercard">
+                <a href="#">My WhatsApp</a>
+                <a href="#">Where To Find Me <span color="blue">?</span></a>
+            </div>
+        </div>
+        <div class="copy">&copy; Copyright 2025. All Rights Reserved</div>
+    </footer>
+    </div>
+    <script type = 'module' src="./menuscripts/indexscript.js"></script>
+</body>
+</html>

@@ -1,0 +1,15 @@
+
+export function EventsHandler(){
+    const res = {
+        name: `EventsHandler`,
+         getThumbnailImage(){ //important
+            const image = new Image()
+            image.src = '../assets/images/controlla.jpg'
+            return image
+        },
+        ui(){},
+        load(){}
+    }
+    res.load()
+    return res
+}
