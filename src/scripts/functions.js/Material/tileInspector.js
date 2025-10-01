@@ -15,7 +15,9 @@ export function TileInspector(Material){
                 const tiledom = this.dom.add(tile, ()=>{
                     const preview = TilePreview(Material, tile, (plugindom, name)=>{
                         tile.addtonodes(plugindom, name)
+                        
                     })
+                    tile.upd
                 })
             })
         },

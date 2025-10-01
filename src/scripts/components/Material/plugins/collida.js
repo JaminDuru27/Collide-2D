@@ -34,7 +34,7 @@ export function Collida(){
         remove(){//important
             this.element.remove()
         },
-        ui(to, CollidaObject, Material, Layout, Tile){
+        ui(to, CollidaObject, Material, Layout, Layers, Layer, Tile){
             this.element = document.createElement(`div`)
             this.element.setAttribute(`style`, this.style())
             this.element.innerHTML += `

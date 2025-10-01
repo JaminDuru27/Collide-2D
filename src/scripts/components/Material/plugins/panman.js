@@ -1,6 +1,7 @@
 import { domextract } from "../../DRAW/domextract"
 import { GenerateId } from "../../../functions.js/DRAW/generateId"
 import { MaterialOptions } from "../options"
+import { TileSelector } from "../../../functions.js/Material/tileselector"
 
 export function Panman(){
     const res= {
@@ -9,21 +10,21 @@ export function Panman(){
         canvasflexstyle(){return`height: 60%;width: 100%;background: #000513;padding: .5rem;position: relative;color: #fff;font-size: .7rem;display: flex;justify-content: space-between;align-items: center;`},
         propliststyle(){return`width: 40%;height: 100%;border-radius: .5rem;background: #00040f;padding: .5rem;border: 1px solid #010c2f;display: flex;justify-content: space-between;align-items: center;flex-direction: column;overflow: hidden scroll;gap: .5rem;`},
         canvasstyle(){return`width: 58%;height: 100%;border-radius: .5rem;background: #00040f;padding: .5rem;border: 1px solid #010c2f;display: flex;justify-content: space-between;align-items: center;flex-direction: column;overflow: hidden scroll;gap: .5rem;`},
-        bottomstyle(){return`height: 40%;width: 100%;background: #000513a1;position: relative; `},
+        bottomstyle(){return`height: 25%;width: 100%;background: #000513a1;position: relative; `},
         tagsstyle(){return`display: flex;justify-content: space-around;align-items: center;padding: .4rem;`},
         tagstyle(){return`cursor:pointer;opacity: .5;color: #ffffff;background: #00081f;padding: .4rem .5rem;border-radius: 1rem;border: 2px solid #ffffffa6;`},
-        contentstyle(){return`width: 100%;height: 50%;padding: .5rem;border: 2px solid #ffffff2e;border-radius: .5rem;display: flex;justify-content: flex-start; gap: .5rem;align-items: center;overflow: scroll hidden;position: relative;`},
+        contentstyle(){return`width: 100%;height: 46%;padding: .5rem;border: 2px solid #ffffff2e;border-radius: .5rem;display: flex;justify-content: flex-start; gap: .5rem;align-items: center;overflow: scroll hidden;position: relative;`},
         contenttitlestyle(){return`opacity: .2;text-transform: uppercase;font-size: .5rem;position: absolute;top: .5rem;left: .5rem;`},
         inputstyle(){return`width: 50%;color: #fff;background: #ffffff21;border: 1px solid #ffffff21;border-radius: .5rem;margin-left: .5rem;padding: .1rem;`},
         togglestyle(){return `width: .5rem;height: .5rem;outline: 2px solid grey;background: #7e779e;position: absolute;left: 0.5rem;top: .5rem;border-radius: 50%;outline-offset: .1rem;`},
-        sidebarstyle(){return `position: absolute;width: 40%;background: #0000003d;padding: .3rem;backdrop-filter: blur(7px);border-radius: .3rem;right: 0;top: 0;border-left: 1px solid #ffffff12;height: 100%;display: flex;transition: .3s ease;box-shadow: -2px 12px 12px -2px #000;justify-content: space-around;align-items: center;flex-direction: column;`},
+        sidebarstyle(){return `overflow: hidden scroll;position: absolute;width: 40%;background: #0000003d;padding: .3rem;backdrop-filter: blur(7px);border-radius: .3rem;right: 0;top: 0;border-left: 1px solid #ffffff12;height: 100%;display: flex;transition: .3s ease;box-shadow: -2px 12px 12px -2px #000;justify-content: space-around;align-items: center;flex-direction: column;`},
         setsidestyle(){return `width: 100%;cursor: pointer;padding: .3rem;text-align: center;background: #0000006e;border-radius: .5rem;`},
         bundlestyle(){return `padding: .3rem .5rem;background: #00040f;border-radius: 1rem;color: #b3aeae;`},
         exitstyle(){return `width: .5rem; height: .5rem; position: absolute; top: .5rem;right: .5rem;`}, 
         addstyle(){return`cursor:pointer;width: 100%;padding: .1rem;font-size: .7rem;background: #ffffff21;border: none;color: #fff;border-radius: .5rem;`},
         varsstyle(){return `width: 100%;height: 3rem;background: #0000004f;border-radius: .4rem;border: 1px solid #000;overflow: hidden scroll;display: flex;padding: .3rem;justify-content: space-between;align-items: center;gap: .3rem;flex-direction: column;`},
         vstyle(){return `position: relative;width: 100%;height: fit-content;background: #0000004f;border-radius: .4rem;border: 1px solid #000;display: flex;padding: .3rem;justify-content: space-between;align-items: center;`},
-        
+        topstyle(){return `display: flex;gap: .5rem;padding: .3rem;`},
         currentside: `left`,
         optionsId: GenerateId() + `Options`,
         getThumbnailImage(){ //important
@@ -111,10 +112,20 @@ export function Panman(){
 
             return input
         },
-        ui(to, PanmanObject, Material, Layout, Tile){
+        ui(to, PanmanObject, Material, Layout, Layers, Layer, Tile){
             this.element = document.createElement(`div`)
             this.element.setAttribute(`style`, this.style())
             this.element.innerHTML += `
+            <div style='${this.topstyle()}'>
+                <div class='input' style='${this.tagstyle()}'>input</div>
+                <div class='auto' style='${this.tagstyle()}'>auto</div>
+                <div class='autox' style='${this.tagstyle()}'>auto x</div>
+                <div class='autoy' style='${this.tagstyle()}'>auto y</div>
+                <div class='par' style='${this.tagstyle()}'>parallax</div>
+                <div class='parx' style='${this.tagstyle()}'>parallax x</div>
+                <div class='pary' style='${this.tagstyle()}'>parallax y</div>
+                
+            </div>
             <div style='${this.canvasflexstyle()}'>
                 <div style='${this.propliststyle()}' class='vars yscroll'></div>
                 <canvas class='canvas' style='${this.canvasstyle()}'></canvas>
@@ -138,12 +149,12 @@ export function Panman(){
             this.setTogglebtn(PanmanObject)
             this.updateToggle(PanmanObject)
             this.updateVars({to: this.dom.vars, PanmanObject, Material})
-            this.events(PanmanObject, Material, Layout, Tile)
+            this.events(PanmanObject, Material, Layout, Layer, Tile)
             this.updatetagBG()
             this.tagEvents(PanmanObject, Tile)
             return this
         },
-        events(PanmanObject, Material ,Layout, Tile){
+        events(PanmanObject, Material ,Layout, Layer,  Tile){
             this.dom.content.onmousedown = (e)=>{
                 if(e.button !== 2)return
                 const mainoption = MaterialOptions()
@@ -170,9 +181,65 @@ export function Panman(){
                         })
                     })
                 })
-                .add(`SelectTiles`, ()=>{})
+                .add(`SelectTiles`, ()=>{
+                    TileSelector(Material, (tiles)=>{
+                        console.log(tiles)
+                        this.showsidebar(`,` ,tiles, PanmanObject, Tile)
+                        mainoption.remove()
+                    })
+                })
+            }
+            this.dom.input.onclick = ()=>{
+                PanmanObject.mode = `input`
+                PanmanObject.enablex = true
+                PanmanObject.enabley = true
+                this.dom.bottom.style.display= `block`
+                this.updatemodes()
+            }
+            this.dom.par.onclick = ()=>{
+                PanmanObject.mode = `parralax`
+                PanmanObject.enablex = true
+                PanmanObject.enabley = true
+                this.dom.bottom.style.display= `none`
+                this.updatemodes()
+            }
+            this.dom.parx.onclick = ()=>{
+                PanmanObject.mode = `parralax`
+                PanmanObject.enablex = true
+                PanmanObject.enabley = false
+                this.dom.bottom.style.display= `none`
+                this.updatemodes()
+            }
+            this.dom.pary.onclick = ()=>{
+                PanmanObject.mode = `parralax`
+                PanmanObject.enabley = true
+                PanmanObject.enablex = false
+                this.dom.bottom.style.display= `none`
+                this.updatemodes()
+            }
+            this.dom.auto.onclick = ()=>{
+                PanmanObject.mode = `auto`
+                PanmanObject.enablex = true
+                PanmanObject.enabley = true
+                this.dom.bottom.style.display= `none`
+                this.updatemodes()
+            }
+            this.dom.autox.onclick = ()=>{
+                PanmanObject.mode = `auto`
+                PanmanObject.enablex = true
+                PanmanObject.enabley = false
+                this.dom.bottom.style.display= `none`
+                this.updatemodes()
+            }
+            this.dom.autoy.onclick = ()=>{
+                PanmanObject.mode = `auto`
+                PanmanObject.enabley = true
+                PanmanObject.enablex = false
+                this.dom.bottom.style.display= `none`
+                this.updatemodes()
             }
         },
+        updatemodes(){},
         setTogglebtn(obj){
             if(this.togglebtn)this.togglebtn.remove()
             this.togglebtn = document.createElement(`div`)
@@ -217,6 +284,7 @@ export function Panman(){
             //create bundle
             if(this.sidebar)this.sidebar.remove()
             this.sidebar = document.createElement(`div`)
+            this.sidebar.classList.add(`yscroll`)
             this.sidebar.setAttribute(`style`, this.sidebarstyle())
             this.sidebar.innerHTML += `
             <div class= 'vars yscroll' style='${this.varsstyle()}'style='width: 100%'>
@@ -256,7 +324,7 @@ export function Panman(){
                 div.classList.add(`var`)
                 div.setAttribute(`style`, this.vstyle())
                 div.innerHTML = `
-                <div style = '${this.inputstyle()}'>${v.prop}</div>
+                <div style = '${this.inputstyle()} text-align:center;'>${v.prop}</div>
                 <input type='${v.parseinput()}' class='v' value = '${v.getinc()}' style = '${this.inputstyle()} text-align:center;' />
                 <div style='${this.exitstyle()}' class='exit'></div>
                 `
@@ -266,6 +334,21 @@ export function Panman(){
                 }
                 d.v.onmousedown = (e)=>{
                     if(e.button !== 2)return
+                    const ops = MaterialOptions()
+                    .set(e, document.body)
+                    Tile.showvariables(e, (prp)=>{
+                        ops.add(prp.v.prop, ()=>{
+                            console.log(prp)
+                            v.getinc = ()=> 0
+                            v.get = ()=> {return va.get()}
+                            d.v.remove()
+                            const el = document.createElement(`div`)
+                            el.setAttribute(`style`, this.inputstyle())
+                            el.textContent  = `${prp.prop}`
+                            d.v.append(el)
+                            ops.remove()
+                        })
+                    })
                 }
                 d.exit.onclick = ()=>{
                     v.remove()

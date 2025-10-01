@@ -65,7 +65,7 @@ export function Animan(){
             }
             return input
         },
-        ui(to, AnimanObject, Material, Layout, Tile){
+        ui(to, AnimanObject, Material, Layout, Layers, Layer, Tile){
             this.element = document.createElement(`div`)
             this.element.setAttribute(`style`, this.style())
             this.element.innerHTML += `

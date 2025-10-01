@@ -1,9 +1,9 @@
 import { domextract } from "../../DRAW/domextract"
 import { GenerateId } from "../../../functions.js/DRAW/generateId"
 
-export function RocketMan(){
+export function Granular(){
     const res= {
-        name: 'RocketMan',
+        name: 'Granular',
         style(){return``},
         togglestyle(){return `width: .5rem;height: .5rem;outline: 2px solid grey;background: #7e779e;position: absolute;left: 0.5rem;top: .5rem;border-radius: 50%;outline-offset: .1rem;`},
         inputstyle(){return`width: 50%;color: #fff;background: #ffffff21;border: 1px solid #ffffff21;border-radius: .5rem;margin-left: .5rem;padding: .1rem;`},
@@ -11,13 +11,13 @@ export function RocketMan(){
         optionsId: GenerateId() + `Options`,
         getThumbnailImage(){ //important
             const image = new Image()
-            image.src = '../assets/images/rocketman.png'
+            image.src = '../assets/images/granular.jpg'
             return image
         },
         remove(){//important
             this.element.remove()
         },
-        updateVars({to, RocketManObject, inputstyle,Material}){
+        updateVars({to, GranularObject, inputstyle,Material}){
            to.innerHTML = ``
            SpriteManObject.variablesOfInterest.forEach((v)=>{
                 const input = this.getinputdom({inputstyle, v ,to,})
@@ -78,14 +78,16 @@ export function RocketMan(){
 
             return input
         },
-        ui(to, AnimanObject, Material, Layout, Layers, Layer, Tile){
+        ui(to, GranularObject, Material, Layout, Layers, Layer, Tile){
             this.element = document.createElement(`div`)
             this.element.setAttribute(`style`, this.style())
-            this.element.innerHTML += ``
+            this.element.innerHTML += `
+            <div></div>
+            `
             to.append(this.element)
             domextract(this.element, 'classname',this)
-            this.setTogglebtn(RocketManObject)
-            this.updateToggle(RocketManObject)
+            this.setTogglebtn(GranularObject)
+            this.updateToggle(GranularObject)
             return this
         },
         setTogglebtn(obj){

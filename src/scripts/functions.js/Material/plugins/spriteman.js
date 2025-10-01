@@ -3,7 +3,7 @@ import { SpriteMan } from "../../../components/Material/plugins/spriteman"
 import { GenerateId } from "../../DRAW/generateId"
 import { PluginLoader } from "../pluginloader"
 
-export function SpriteManObject(Material, Layout, Tile){
+export function SpriteManObject(Material, Layout, Layers, Layer, Tile){
     const res= {
         id: GenerateId(),//important
         name: `SpriteMan`,//important
@@ -26,7 +26,7 @@ export function SpriteManObject(Material, Layout, Tile){
         variablesOfInterest: ['nx', 'ny', 'framedelay', 'loop', 'framex', 'framey',], //must
         open(){ //must
             this.loader = PluginLoader(Material, Layout, Tile, this, this.name)
-            this.ui = SpriteMan().ui(domextract(this.loader.ui.element).object.main, this, Material, Layout, Tile)
+            this.ui = SpriteMan().ui(domextract(this.loader.ui.element).object.main, this, Material, Layout, Layers, Layer, Tile)
             //set the vars
             this.events(this.ui)
             return true

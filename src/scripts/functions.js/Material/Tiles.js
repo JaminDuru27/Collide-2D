@@ -237,7 +237,7 @@ export function Tile(Material,Layout, Layers, Layer){
         },
         addtonodes(plugindom, name){
             const objectName = name + `Object`
-            const pluginobj = PLUGINOBJS[objectName](Material, Layout, this)
+            const pluginobj = PLUGINOBJS[objectName](Material, Layout, Layers, Layer, this)
             if(pluginobj){
                 this.nodes.push(pluginobj)
                 this.updateNodesAndModsDom()
@@ -248,7 +248,7 @@ export function Tile(Material,Layout, Layers, Layer){
         },
         addtomods(plugindom, name){
             const objectName = name + `Object`
-            const modObjs = MODOBJS[objectName](Material, Layout, this)
+            const modObjs = MODOBJS[objectName](Material, Layout, Layers, Layer, this)
             if(modObjs){
                 this.modifiers.push(modObjs)
                 this.updateNodesAndModsDom()
@@ -308,7 +308,7 @@ export function Tile(Material,Layout, Layers, Layer){
                     .set(this.options, this.options.dom.element)
                     Material.groups.array.forEach(group=>{
                         const d = drop.add(group.name, ()=>{
-                            const selected = Layer.getSelected()
+                            const selected = Material.layouts.getselectedtiles()
                             selected.forEach(tile=>{
                                 group.add(tile) 
                                 drop.remove()
@@ -351,7 +351,6 @@ export function Tile(Material,Layout, Layers, Layer){
                 this.inity = this.y
                 this.initw = this.w
                 this.inith = this.h
-                console.log(`set pos`)
             }
             // for image
             this.absx = this.x + this.offx
@@ -360,7 +359,6 @@ export function Tile(Material,Layout, Layers, Layer){
             this.absh = this.h + this.offh
             this.dimentionInitiated = true
                 
-            // console.log(this.offx)
         },
         remove(){
             this.nodes.forEach(node=>node.remove())

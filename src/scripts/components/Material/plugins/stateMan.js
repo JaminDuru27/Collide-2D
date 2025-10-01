@@ -330,7 +330,7 @@ export function StateMan(){
         enableoptions(){
 
         },
-        ui(to, StateManObject, Material, Layout, Tile){
+        ui(to, StateManObject, Material, Layout, Layers, Layer, Tile){
             this.element = document.createElement(`div`)
             this.element.setAttribute(`style`, this.style())
             this.element.innerHTML += `

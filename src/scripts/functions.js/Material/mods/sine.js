@@ -2,7 +2,7 @@ import { domextract } from "../../../components/DRAW/domextract"
 import { Sine } from "../../../components/Material/mods/sine"
 import { PluginLoader } from "../pluginloader"
 
-export function SineObject(Material,Layout, Tile){
+export function SineObject(Material, Layout, Layers, Layer, Tile){
     const res = {
         name: `Sine`,
         globalspeeddelay: 1,
@@ -37,7 +37,7 @@ export function SineObject(Material,Layout, Tile){
         },
         open(){
             this.loader = PluginLoader(Material, Layout, Tile, this, this.name, true)
-            this.ui = Sine().ui(domextract(this.loader.ui.element).object.main, this, Material, Layout, Tile)
+            this.ui = Sine().ui(domextract(this.loader.ui.element).object.main, this, Material, Layout, Layers, Layer, Tile)
             this.ui.updateosc(this)
             this.ui.updatevars(this)
         }, 

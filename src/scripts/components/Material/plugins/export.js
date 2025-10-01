@@ -1,3 +1,5 @@
+export { Granular } from "./granular";
+
 export { Panman } from "./panman";
 
 export { Animan } from "./animan";

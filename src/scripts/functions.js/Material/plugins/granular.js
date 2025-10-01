@@ -1,25 +1,23 @@
 import { domextract } from "../../../components/DRAW/domextract"
 import { feedback } from "../../../components/DRAW/feedback"
-import { RocketMan } from "../../../components/Material/plugins/rocketman"
+import { Granular } from "../../../components/Material/plugins/granular"
 import { GenerateId } from "../../DRAW/generateId"
 import { PluginLoader } from "../pluginloader"
 
 
-export function RocketManObject(Material, Layout, Layers, Layer, Tile){
+export function GranularObject(Material, Layout, Layers, Layer, Tile){
     const res = {
         id: GenerateId(),//important
-        name: `RocketMan`,//important
+        name: `Granular`,//important
         settingsoptions: [],//important
-        requirement(){return Tile.collision && Tile !== Material},//important
-        requirementMessage: 'needs collision rect',//important
-        variablesOfInterest: ['index', `friction`], //must
-        friction: 0.2,
-        index: 0.2,
-        toggle: true,
+        requirement(){return true},//important
+        requirementMessage: '',//important
+        toggle: true, // important
+        variablesOfInterest: [''], //must, string, number, non-return function, boolean
+        eventsOfInterest: [''],//must , function, only returns boolean
         open(){ //must
             this.loader = PluginLoader(Material, Layout, Tile, this, this.name)
-            this.ui = RocketMan().ui(domextract(this.loader.ui.element).object.main, this, Material, Layout, Layers, Layer, Tile)
-            this.index= Tile.collision.weight
+            this.ui = Granular().ui(domextract(this.loader.ui.element).object.main, this, Material, Layout, Layers, Layer, Tile)
             //set the vars
             return true
         },
@@ -36,12 +34,11 @@ export function RocketManObject(Material, Layout, Layers, Layer, Tile){
             this.loader.remove()
             Tile.nodes = Tile.nodes.filter(e=> e !== this) //delete this
         },
-        load(){
-            this.open()
-            this.events()
+        load(){       
             this.updateTileVars()
+            this.open()
         },
-        updateTileVars(name){
+        updateTileVars(){
             Tile.setVariable({prop: this.name, nodeId: Tile.id})
             Tile.setFunction({prop: this.name, nodeId: Tile.id})
             Tile.setEvent({prop: this.name, nodeId: Tile.id})
@@ -65,30 +62,9 @@ export function RocketManObject(Material, Layout, Layers, Layer, Tile){
                 newvars.push(variable)
             })
             this.variablesOfInterest = newvars
-
         },
-        events(){
-            Material.ui.ondevmodeoff(()=>{
-                Tile.collision.vy = 0
-                this.ui.y = 0
-                this.ui.vy = 0
-            })
-            
-        },
-        setIndex(val){
-            this.index = val
-        },
-        updateIndex(obj){
-            if(obj)
-            obj.vy += this.index
-            
-        },
-        update(){
-            if(!this.toggle)return
-            if(!Tile.collision)this.remove()
-            Tile.collision.weight = this.index
-            this.updateIndex(Tile.collision)
-            this.ui.update(Material, Tile)
+        update(props){
+            this?.ui?.update({...this, ...props})
         },
     }
     if(!res.requirement()){

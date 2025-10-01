@@ -47,6 +47,13 @@ export function Layouts(Material){
         },
         checklayoutoverlap(layouta){
         },
+        getselectedtiles(){
+            const array = []
+            this.currentArray.flat().forEach(layout=>{
+                array.push(layout.layers.layer.getSelected())
+            })
+            return array.flat()
+        },
         updatespace(){
             if(this.currentArray[0]?.length <=0)return
             //auto update grid to wrap map

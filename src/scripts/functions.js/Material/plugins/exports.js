@@ -1,3 +1,5 @@
+export { GranularObject } from "./granular.js";
+
 export { PanmanObject } from "./panman.js";
 
 export { AnimanObject } from "./animan.js";

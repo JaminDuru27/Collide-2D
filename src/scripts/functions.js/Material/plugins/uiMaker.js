@@ -5,7 +5,7 @@ import { feedback } from "../../../components/DRAW/feedback"
 import { RocketMan } from "../../../components/Material/plugins/rocketman"
 import { GenerateId } from "../../DRAW/generateId"
 import { PluginLoader } from "../pluginloader"
-export function UIMakerObject(Material, Layout, Tile){
+export function UIMakerObject(Material, Layout, Layers, Layer, Tile){
     const res = {
         name: `UIMaker`,
         elements : [],
@@ -17,7 +17,7 @@ export function UIMakerObject(Material, Layout, Tile){
         toggle: true,
         open(){ //must
             this.loader = PluginLoader(Material, Layout, Tile, this, this.name)
-            this.ui = UIMaker().ui(domextract(this.loader.ui.element).object.main, this, Material, Layout, Tile)
+            this.ui = UIMaker().ui(domextract(this.loader.ui.element).object.main, this, Material, Layout, Layers, Layer, Tile)
             this.DOM = this.ui
             //set the vars
             return true

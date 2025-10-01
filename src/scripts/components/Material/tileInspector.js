@@ -37,6 +37,9 @@ export function TileIInspectorUI(Material){
                 canvas.setAttribute(`style`, this.tilestyle())
                 canvas.onclick = ()=>{
                     callback()
+                    //update nodes and props
+                    tile.updateNodesAndModsDom()
+                    tile.updateTilePropsDom()
                 }
                 canvas.onmouseenter = ()=>{
                     tile.showInspect = true

@@ -3,7 +3,7 @@ import { Collida } from "../../../components/Material/plugins/collida"
 import { GenerateId } from "../../DRAW/generateId"
 import { PluginLoader } from "../pluginloader"
 export const rects = []  
-export function CollidaObject(Material, Layout, Tile, shouldLoad = true){
+export function CollidaObject(Material, Layout, Layers, Layer, Tile, shouldLoad = true){
     const res = {
         id: GenerateId() + `collida`,//important
         name: `Collida`,//important
@@ -27,7 +27,7 @@ export function CollidaObject(Material, Layout, Tile, shouldLoad = true){
         rand(){return Math.floor( Math.random() * (225 - 0)+0)},
         open(){ //must
             this.loader = PluginLoader(Material, Layout, Tile, this, this.name)
-            this.ui = Collida().ui(domextract(this.loader.ui.element).object.main, this, Material, Layout, Tile)
+            this.ui = Collida().ui(domextract(this.loader.ui.element).object.main, this, Material, Layout, Layers, Layer, Tile)
             //set the vars
             return true
         },

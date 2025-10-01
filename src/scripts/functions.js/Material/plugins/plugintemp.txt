@@ -5,7 +5,7 @@ import { GenerateId } from "../../DRAW/generateId"
 import { PluginLoader } from "../pluginloader"
 
 
-export function RocketManObject(Material, Layout, Tile){
+export function RocketManObject(Material, Layout, Layers, Layer, Tile){
     const res = {
         id: GenerateId(),//important
         name: `RocketMan`,//important
@@ -17,7 +17,7 @@ export function RocketManObject(Material, Layout, Tile){
         eventsOfInterest: [''],//must , function, only returns boolean
         open(){ //must
             this.loader = PluginLoader(Material, Layout, Tile, this, this.name)
-            this.ui = RocketMan().ui(domextract(this.loader.ui.element).object.main, this, Material, Layout, Tile)
+            this.ui = RocketMan().ui(domextract(this.loader.ui.element).object.main, this, Material, Layout, Layers, Layer, Tile)
             //set the vars
             return true
         },

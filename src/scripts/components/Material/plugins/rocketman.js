@@ -23,7 +23,7 @@ export function RocketMan(){
         remove(){//important
             this.element.remove()
         },
-        ui(to, RocketManObject, Material, Layout, Tile){
+        ui(to, RocketManObject, Material, Layout, Layers, Layer, Tile){
             this.element = document.createElement(`div`)
             this.element.classList.add(`ROCKETMAN`)
             this.element.setAttribute(`style`, this.style())

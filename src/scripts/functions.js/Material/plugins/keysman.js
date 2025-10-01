@@ -5,7 +5,7 @@ import { GenerateId } from "../../DRAW/generateId"
 import { PluginLoader } from "../pluginloader"
 
 
-export function KeysManObject(Material, Layout, Tile){
+export function KeysManObject(Material, Layout, Layers, Layer, Tile){
     const res = {
         id: GenerateId(),//important
         name: `KeysMan`,//important
@@ -17,7 +17,7 @@ export function KeysManObject(Material, Layout, Tile){
         toggle: true,
         open(){ //must
             this.loader = PluginLoader(Material, Layout, Tile, this, this.name)
-            this.ui = KeysMan().ui(domextract(this.loader.ui.element).object.main, this, Material, Layout, Tile)
+            this.ui = KeysMan().ui(domextract(this.loader.ui.element).object.main, this, Material, Layout, Layers, Layer, Tile)
             this.updateFields()
             //set the vars
             return true

@@ -20,6 +20,7 @@ import { Selection } from "./selection.js"
 import { TileInspector } from "./tileInspector.js"
 import { MaterialOptions } from "../../components/Material/options.js"
 import { warningscreen } from "./warningscreen.js"
+import { TileSelector } from "./tileselector.js"
 
 export function Material(){
     const res= {
@@ -53,6 +54,7 @@ export function Material(){
             this.optionsHandler = MaterialOptionsHandler(this)
             this.tileInspector = TileInspector(this)
             this.showOptions()
+
             return this
         },
         pluginsadd(){

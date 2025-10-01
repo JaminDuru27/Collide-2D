@@ -4,7 +4,7 @@ import { StateMan } from "../../../components/Material/plugins/stateMan"
 import { GenerateId } from "../../DRAW/generateId"
 import { PluginLoader } from "../pluginloader"
 
-export function StateManObject(Material, Layout, Tile){
+export function StateManObject(Material, Layout, Layers, Layer, Tile){
     const res = {
         id: GenerateId(),//important
         name: `StateMan`,//important
@@ -16,7 +16,7 @@ export function StateManObject(Material, Layout, Tile){
         toggle: true,
         open(){ //must
             this.loader = PluginLoader(Material, Layout, Tile, this, this.name)
-            this.ui = StateMan().ui(domextract(this.loader.ui.element).object.main, this, Material, Layout, Tile)
+            this.ui = StateMan().ui(domextract(this.loader.ui.element).object.main, this, Material, Layout, Layers, Layer, Tile)
             this.updateDom()
 
             //set the vars

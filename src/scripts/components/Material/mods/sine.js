@@ -20,7 +20,7 @@ export function Sine(){
             image.src = '../assets/images/sineman.png'
             return image
         },
-        ui(to, SineObject, Material, Layout, Tile){
+        ui(to, SineObject, Material, Layout, Layers, Layer, Tile){
             this.element = document.createElement(`div`)
             this.element.classList.add(`SINE`)
             this.element.setAttribute(`style`, this.style())

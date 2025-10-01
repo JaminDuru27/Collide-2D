@@ -37,7 +37,7 @@ export function UIMaker(){
         remove(){//important
             this.element.remove()
         },
-        ui(to, UIMakerObject, Material, Layout, Tile){
+        ui(to, UIMakerObject, Material, Layout, Layers, Layer, Tile){
             this.element = document.createElement(`div`)
             this.element.classList.add(`uimaker`)
             this.element.setAttribute(`style`, this.style())

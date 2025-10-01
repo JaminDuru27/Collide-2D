@@ -32,7 +32,7 @@ export function Controlla(){
         remove(){//important
             this.element.remove()
         },
-        ui(to, ControllaObject, Material, Layout, Tile){
+        ui(to, ControllaObject, Material, Layout, Layers, Layer, Tile){
             this.element = document.createElement(`div`)
             this.element.setAttribute(`style`, this.style())
             this.element.innerHTML += `

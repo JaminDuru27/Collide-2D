@@ -60,7 +60,7 @@ export function KeysMan(){
             this.fields.push(field)
             return field
         },
-        ui(to, KeysManObject, Material, Layout, Tile){
+        ui(to, KeysManObject, Material, Layout, Layers, Layer, Tile){
             this.element = document.createElement(`div`)
             this.element.setAttribute(`style`, this.style())
             this.element.innerHTML += `

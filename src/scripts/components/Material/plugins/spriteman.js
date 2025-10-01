@@ -27,7 +27,7 @@ export function SpriteMan(){
         remove(){//important
             this.element.remove()
         },
-        ui(to,SpriteManObject, Material, Layout, Tile){ //important
+        ui(to,SpriteManObject, Material, Layout, Layers, Layer, Tile){ //important
             this.element = document.createElement(`div`)
             this.element.classList.add(`SPRITEMAN`)
             this.element.setAttribute(`style`, this.style())

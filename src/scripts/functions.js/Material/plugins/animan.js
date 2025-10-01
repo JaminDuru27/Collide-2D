@@ -5,7 +5,7 @@ import { GenerateId } from "../../DRAW/generateId"
 import { PluginLoader } from "../pluginloader"
 
 
-export function AnimanObject(Material, Layout, Tile){
+export function AnimanObject(Material, Layout, Layers, Layer, Tile){
     const res = {
         id: GenerateId(),//important
         name: `Animan`,//important
@@ -21,7 +21,7 @@ export function AnimanObject(Material, Layout, Tile){
         toggle: true,
         open(){ //must
             this.loader = PluginLoader(Material, Layout, Tile, this, this.name)
-            this.ui = Animan().ui(domextract(this.loader.ui.element).object.main, this, Material, Layout, Tile)
+            this.ui = Animan().ui(domextract(this.loader.ui.element).object.main, this, Material, Layout, Layers, Layer, Tile)
             this.ui.updateAnimations(this)
             this.ui.updateAnimation(this)
             //set the vars

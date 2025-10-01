@@ -5,7 +5,7 @@ import { EventHandler } from "../../DRAW/events"
 import { GenerateId } from "../../DRAW/generateId"
 import { PluginLoader } from "../pluginloader"
 
-export function PanmanObject(Material, Layout, Tile){
+export function PanmanObject(Material, Layout, Layers, Layer, Tile){
     const res = {
         id: GenerateId(),//important
         name: `Panman`,//important
@@ -27,9 +27,10 @@ export function PanmanObject(Material, Layout, Tile){
         restrictToWindow: false,
         restrictToLayout: false,
         color: ` #ff000023`,
+        mode: `input`,
         open(){ //must
             this.loader = PluginLoader(Material, Layout, Tile, this, this.name)
-            this.ui = Panman().ui(domextract(this.loader.ui.element).object.main, this, Material, Layout, Tile)
+            this.ui = Panman().ui(domextract(this.loader.ui.element).object.main, this, Material, Layout, Layers, Layer, Tile)
             this.ui.updateBundle(this)
 
             //set the vars
@@ -106,7 +107,7 @@ export function PanmanObject(Material, Layout, Tile){
                 call(){
                     this.vars.forEach(v=>{
                         if(this.mode === `inc`){
-                            this.inc += v.getinc() 
+                            this.inc += res.lerp(this.inc, v.getinc(), 0.5) 
                             // console.log(v.prop, this.inc, v.getinc())
                             this.tilestochangearray.forEach(t=>{
                                 const arr = t.find('Tile', t.variables).subs
@@ -137,10 +138,10 @@ export function PanmanObject(Material, Layout, Tile){
             )
         },
          
-        onwindowright(){return (this.x + this.w) - Material.tx > Material.w + Material.tx},
-        onwindowbottom(){return (this.y + this.h) - Material.ty  > Material.h},
-        onwindowtop(){return this.y  + Material.ty < Material.tx},
-        onwindowleft(){return this.x + Material.tx < Material.ty},
+        onwindowright(){return ((this.x + Material.tx) + this.w) - Material.tx > Material.w - Material.tx},
+        onwindowbottom(){return ((this.y + Material.ty) + this.h) - Material.ty  > Material.h - Material.ty},
+        onwindowtop(){return (this.y + Material.ty)  + Material.ty < Material.ty},
+        onwindowleft(){return (this.x + Material.tx) + Material.tx < Material.tx},
 
         getOverlap(){
             if(!this.onwindowcollide())return{overlapx:0, overlapy:0}
@@ -181,7 +182,7 @@ export function PanmanObject(Material, Layout, Tile){
             // Material.ty -= 1
         },
         updateautopan(){
-            if(!this.autopan)return
+            if(this.mode !== `auto`)return
             if(!this.onwindowcollide())return
             // this.resolvetop()
             // this.resolvebottom()
@@ -194,22 +195,22 @@ export function PanmanObject(Material, Layout, Tile){
         },
         
         /////////
-        resolvetowindowright(){
-            console.log((this.x  + this.w) - Material.tx, window.innerWidth + Material.tx)
+        resolvetoright(){
             if(!this.onwindowright())return
             this.callarray('right')
-            Material.tx -= 5
 
         },
-        resolvetowindowleft(){
+        resolvetoleft(){
             if(!this.onwindowleft())return
             this.callarray('left')
+            Material.tx += 5
+
         },
-        resolvetowindowtop(){
+        resolvetotop(){
             if(!this.onwindowtop())return
             this.callarray('top')
         },
-        resolvetowindowbottom(){
+        resolvetobottom(){
             if(!this.onwindowbottom())return
             this.callarray('bottom')
             
@@ -220,10 +221,13 @@ export function PanmanObject(Material, Layout, Tile){
             })
         },
         assigntiles(){
-            this.resolvetowindowtop()
-            this.resolvetowindowbottom()
-            this.resolvetowindowleft()
-            this.resolvetowindowright()
+            if(this.mode === `input`){
+                this.resolvetotop()
+                this.resolvetobottom()
+                this.resolvetoleft()
+                this.resolvetoright()
+            }
+            
         },
         update(props){
             this.updateDim()

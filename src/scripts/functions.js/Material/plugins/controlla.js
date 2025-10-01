@@ -5,7 +5,7 @@ import { EventHandler } from "../../DRAW/events"
 import { GenerateId } from "../../DRAW/generateId"
 import { PluginLoader } from "../pluginloader"
 
-export function ControllaObject(Material, Layout, Tile){
+export function ControllaObject(Material, Layout, Layers, Layer, Tile){
     const res = {
         id: GenerateId(),//important
         name: `Controlla`,//important
@@ -35,7 +35,7 @@ export function ControllaObject(Material, Layout, Tile){
         },
         open(){ //must
             this.loader = PluginLoader(Material, Layout, Tile, this, this.name)
-            this.ui = Controlla().ui(domextract(this.loader.ui.element).object.main, this, Material, Layout, Tile)
+            this.ui = Controlla().ui(domextract(this.loader.ui.element).object.main, this, Material, Layout, Layers, Layer, Tile)
             //set the vars
             return true
         },
