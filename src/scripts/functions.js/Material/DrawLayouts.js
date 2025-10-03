@@ -47,12 +47,32 @@ export function Layouts(Material){
         },
         checklayoutoverlap(layouta){
         },
+
+        //TILES OPERATIONS
         getselectedtiles(){
             const array = []
             this.currentArray.flat().forEach(layout=>{
                 array.push(layout.layers.layer.getSelected())
             })
             return array.flat()
+        },
+        repositionalltiles(){
+            this.currentArray.flat().forEach(layout=>{
+                layout.layers.array.forEach(layer=>{
+                    layer.tiles.forEach(tile=>{
+                        tile.resetPos()
+                    })
+                })
+            })
+        },
+        resizealltiles(){
+            this.currentArray.flat().forEach(layout=>{
+                layout.layers.array.forEach(layer=>{
+                    layer.tiles.forEach(tile=>{
+                        tile.resetSize()
+                    })
+                })
+            })
         },
         updatespace(){
             if(this.currentArray[0]?.length <=0)return

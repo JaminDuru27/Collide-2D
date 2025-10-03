@@ -14,6 +14,8 @@ export function MaterialLayout({name = `new Project`}){
         toggle: -1,
         devmodeoffevents: [],
         devmodeonevents: [],
+        onfullscreenarray: [],
+        onnormalscreenarray: [],
         canvasstyle() { return `width: 100vw; height: calc(100vh - 2rem);position: absolute; bottom: 0; left: 0` },
         fullcanvasstyle(){return `width: 100vw;height: 100vh;position: absolute;bottom: 0;left: 0;z-index: 1;`},
         style() { return `color: white;background: #0d012d;width: 100vw;height: 100vh;position: absolute;top: 0;left: 0;` },
@@ -118,6 +120,7 @@ export function MaterialLayout({name = `new Project`}){
             this.dom.fullscreen.style.backgroundImage = `url(../assets/icons/minimize.png)`
             this.dom.fullscreen.setAttribute(`state`, `full`)
             this.fullscreen = true
+            this.onfullscreenarray.forEach(arr=>arr())
         },
         setnormalscreen(){
             this.dom.canvas.setAttribute(`style`, this.canvasstyle())
@@ -127,7 +130,10 @@ export function MaterialLayout({name = `new Project`}){
             this.dom.fullscreen.style.backgroundImage = `url(../assets/icons/fullscreen.png)`
             this.dom.fullscreen.setAttribute(`state`, `normal`)
             this.fullscreen = false
+            this.onnormalscreenarray.forEach(arr=>arr())
         },
+        onfullscreen(callback){this.onfullscreenarray.push(callback)},
+        onnormalscreen(callback){this.onnormalscreenarray.push(callback)},
         events(){
             let toggle1 = this.setToggle()
             let toggle2 = this.setToggle()

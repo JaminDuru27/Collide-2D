@@ -7,7 +7,7 @@ import { MaterialOptions } from "./options"
 let e
 export function pluginLoaderUI(Material, Layout, Tile,pluginObj, pluginUI, pluginloader){
     const res = {
-        style(){return `width: 50vw;height: 50vh;background: #ffffff12;position: absolute;top: 50%;left: 50%; transform: translate(-50%, -50% );border-radius: .5rem;border: 1px solid #e2e2e733;overflow: hidden;backdrop-filter: blur(7px);padding: .3rem`},
+        style(){return `z-index: 9;width: 50vw;height: 50vh;background: #ffffff12;position: absolute;top: 50%;left: 50%; transform: translate(-50%, -50% );border-radius: .5rem;border: 1px solid #e2e2e733;overflow: hidden;backdrop-filter: blur(7px);padding: .3rem`},
         headstyle(){return `height: 5%;font-size: .7rem;display: flex;justify-content: space-evenly;align-items: center;color: #fff;`},
         mainstyle(){return `overflow:hidden;height: 92%;border-radius: .5rem;border: 1px solid #ffffff4d;margin-top: 2%;position: relative;oveflow: hidden `},
         titlestyle(){return ``},

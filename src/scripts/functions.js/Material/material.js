@@ -54,13 +54,34 @@ export function Material(){
             this.optionsHandler = MaterialOptionsHandler(this)
             this.tileInspector = TileInspector(this)
             this.showOptions()
+            this.fullscreenevents()
 
             return this
+        },
+        fullscreenevents(){
+            this.ui.onfullscreen(()=>{
+                this.lastgrid = {x: this.grid.x, y: this.grid.y, w: this.grid.cw, h: this.grid.ch}
+                this.grid.x = 0
+                this.grid.y = 0
+                this.grid.populate()
+
+                this?.layouts?.repositionalltiles()
+                this?.layouts?.resizealltiles()
+                //calc size ratio
+            })
+            this.ui.onnormalscreen(()=>{
+                for(let x in this.lastgrid){
+                    this.grid[x] = this.lastgrid[x]
+                }
+                this.grid.populate()
+                this?.layouts?.repositionalltiles()
+                this?.layouts?.resizealltiles()
+            })
         },
         pluginsadd(){
             this.ui.dom.plugins.onclick = ()=>{
                 this.plugins.open((pluginobj, name)=>{
-                    const obj  = PLUGINOBJS[name+`Object`](this, undefined, this)
+                    const obj  = PLUGINOBJS[name+`Object`](this, undefined, undefined, undefined, this)
                     if(obj)
                     this.nodes.push(obj)
                 })
@@ -70,7 +91,7 @@ export function Material(){
             this.ui.dom.mods.onclick = ()=>{
                 this.plugins.open((pluginobj, name)=>{
                     console.log(name)
-                    const obj  = MODOBJS[name +`Object`](this, undefined, this)
+                    const obj  = MODOBJS[name +`Object`](this, undefined, undefined, undefined, this)
                     if(obj)
                     this.nodes.push(obj)
                 }, true)
@@ -169,8 +190,8 @@ export function Material(){
                 if(this[x]?.update)this[x]?.update({ctx: this.ui.ctx, delta: +(delta)})
             }
             this.setDevMode()
-            this.nodes.forEach(node=>node.update({ctx:this.ctx, delta: +(delta)}))
-            this.modifiers.forEach(mod=>mod.update({ctx:this.ctx, delta: +(delta)}))
+            this.nodes.forEach(node=>node.update({ctx:this.ui.ctx, delta: +(delta)}))
+            this.modifiers.forEach(mod=>mod.update({ctx:this.ui.ctx, delta: +(delta)}))
             this.ui.ctx.restore()
 
         }

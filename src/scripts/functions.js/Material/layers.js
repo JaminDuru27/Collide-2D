@@ -70,7 +70,6 @@ export function Layers(Material, Layout){
             props.ctx.fillStyle= ` #00000071`
             if(this.preview){
                 props.ctx.fillRect(0, 0, Material.ui.ctx.canvas.width, Material.ui.ctx.canvas.height )
-                console.log(`prop`)
             }
             if(this.preview){
                 this.preview.update(props)

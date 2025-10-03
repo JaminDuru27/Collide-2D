@@ -31,7 +31,7 @@ export function Tile(Material,Layout, Layers, Layer){
         id: GenerateId() + `Tile`,
         
         load(){
-            this.showvariables = (e, callback, add = [])=>{return this.show(e, callback, [`variables`,...add])}
+            this.showvariables = (e, callback, x = [])=>{return this.show(e, callback, [`variables`,...add])}
             this.showevents = (e, callback, add = [])=>{return this.show(e, callback, [`events`, ...add])}
             this.showfunctions = (e, callback,add = [])=>{return this.show(e, callback, [`functions`, ...add])}
             this.setVariable = ({par, set, get, prop, nodeId,})=>{return this.setvarfuncevent({par, set, get, prop, nodeId, array:this.variables,})}
@@ -381,14 +381,14 @@ export function Tile(Material,Layout, Layers, Layer){
             this?.preview?.update()
             this.updateDim()
             
-            if(Material.ui.devmode){
-                this.nodes.forEach(node=>(node.id === this?.sprite?.id)?null:(node.id === this?.collision?.id)?null:node.update({...p, tile: this}))
-                this.modifiers.forEach(mod=>mod.update({...p, tile: this}))
-                
-            }
             this?.sprite?.update({...p, tile: this})
             this?.collision?.update({...p, tile: this})
             this.draw(p)
+            if(Material.ui.devmode){
+                this.nodes.forEach(node=>(node.id === this?.sprite?.id)?null:(node.id === this?.collision?.id)?null:node.update({...p, tile: this}))
+                this.modifiers.forEach(mod=>mod.update({...p, tile: this}))
+            }
+
             this.drawOnSelected(p)
             this.handleSelect()
             this.updateSelectOptions()

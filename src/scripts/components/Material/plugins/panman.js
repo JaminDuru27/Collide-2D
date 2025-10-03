@@ -131,7 +131,7 @@ export function Panman(){
                 <canvas class='canvas' style='${this.canvasstyle()}'></canvas>
             </div>
             <div class='bottom' style='${this.bottomstyle()}'>
-                <div style='${this.tagsstyle()}'>
+                <div class='tags' style='${this.tagsstyle()}'>
                     <div class='tag' name='left' style='${this.tagstyle()}'>left</div>
                     <div class='tag' name='right' style='${this.tagstyle()}'>right</div>
                     <div class='tag' name='top' style='${this.tagstyle()}'>top</div>
@@ -183,58 +183,69 @@ export function Panman(){
                 })
                 .add(`SelectTiles`, ()=>{
                     TileSelector(Material, (tiles)=>{
-                        console.log(tiles)
-                        this.showsidebar(`,` ,tiles, PanmanObject, Tile)
+                        this.showsidebar(`Selected Tiles` ,tiles, PanmanObject, Tile)
                         mainoption.remove()
                     })
                 })
             }
             this.dom.input.onclick = ()=>{
                 PanmanObject.mode = `input`
-                PanmanObject.enablex = true
-                PanmanObject.enabley = true
+                PanmanObject.allowx = true
+                PanmanObject.allowy = true
+                this.dom.tags.style.display= `flex`
                 this.dom.bottom.style.display= `block`
+                this.dom.tags.querySelectorAll(`.tag`).forEach(tag=>tag.style.display = `block`)
+                this.dom.tags.textContent = ``
                 this.updatemodes()
             }
             this.dom.par.onclick = ()=>{
-                PanmanObject.mode = `parralax`
-                PanmanObject.enablex = true
-                PanmanObject.enabley = true
-                this.dom.bottom.style.display= `none`
+                PanmanObject.mode = `parallax`
+                this.currentside = `parallaxBundle`
+                this.updateBundle(PanmanObject, Tile)
+                PanmanObject.allowx = true
+                PanmanObject.allowy = true
+                this.dom.tags.querySelectorAll(`.tag`).forEach(tag=>tag.style.display = `none`)
+                this.dom.tags.textContent = `Select Layer To Affect,  Works Best in FullScreen`
                 this.updatemodes()
             }
             this.dom.parx.onclick = ()=>{
-                PanmanObject.mode = `parralax`
-                PanmanObject.enablex = true
-                PanmanObject.enabley = false
-                this.dom.bottom.style.display= `none`
+                PanmanObject.mode = `parallax`
+                his.currentside = `parallaxBundle`
+                this.updateBundle(PanmanObject, Tile)
+                PanmanObject.allowx = true
+                PanmanObject.allowy = false
+                this.dom.tags.querySelectorAll(`.tag`).forEach(tag=>tag.style.display = `none`)
+                this.dom.tags.textContent = `Select Layer To Affect`
                 this.updatemodes()
             }
             this.dom.pary.onclick = ()=>{
-                PanmanObject.mode = `parralax`
-                PanmanObject.enabley = true
-                PanmanObject.enablex = false
-                this.dom.bottom.style.display= `none`
+                PanmanObject.mode = `parallax`
+                his.currentside = `parallaxBundle`
+                this.updateBundle(PanmanObject, Tile)
+                PanmanObject.allowy = true
+                PanmanObject.allowx = false
+                this.dom.tags.querySelectorAll(`.tag`).forEach(tag=>tag.style.display = `none`)
+                this.dom.tags.textContent = `Select Layer To Affect`
                 this.updatemodes()
             }
             this.dom.auto.onclick = ()=>{
                 PanmanObject.mode = `auto`
-                PanmanObject.enablex = true
-                PanmanObject.enabley = true
+                PanmanObject.allowx = true
+                PanmanObject.allowy = true
                 this.dom.bottom.style.display= `none`
                 this.updatemodes()
             }
             this.dom.autox.onclick = ()=>{
                 PanmanObject.mode = `auto`
-                PanmanObject.enablex = true
-                PanmanObject.enabley = false
+                PanmanObject.allowx = true
+                PanmanObject.allowy = false
                 this.dom.bottom.style.display= `none`
                 this.updatemodes()
             }
             this.dom.autoy.onclick = ()=>{
                 PanmanObject.mode = `auto`
-                PanmanObject.enabley = true
-                PanmanObject.enablex = false
+                PanmanObject.allowy = true
+                PanmanObject.allowx = false
                 this.dom.bottom.style.display= `none`
                 this.updatemodes()
             }
@@ -336,19 +347,17 @@ export function Panman(){
                     if(e.button !== 2)return
                     const ops = MaterialOptions()
                     .set(e, document.body)
+                
                     Tile.showvariables(e, (prp)=>{
-                        ops.add(prp.v.prop, ()=>{
-                            console.log(prp)
-                            v.getinc = ()=> 0
-                            v.get = ()=> {return va.get()}
-                            d.v.remove()
-                            const el = document.createElement(`div`)
-                            el.setAttribute(`style`, this.inputstyle())
-                            el.textContent  = `${prp.prop}`
-                            d.v.append(el)
-                            ops.remove()
-                        })
-                    })
+                        v.getinc = ()=> 0
+                        v.get = ()=> {return prp['v'].get()}
+                        d.v.remove()
+                        const el = document.createElement(`div`)
+                        el.setAttribute(`style`, this.inputstyle())
+                        el.textContent  = `${prp.v.prop}`
+                        div.append(el)
+                        ops.remove()
+                    }, [])
                 }
                 d.exit.onclick = ()=>{
                     v.remove()

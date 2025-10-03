@@ -4,30 +4,36 @@ import { Panman } from "../../../components/Material/plugins/panman"
 import { EventHandler } from "../../DRAW/events"
 import { GenerateId } from "../../DRAW/generateId"
 import { PluginLoader } from "../pluginloader"
+import { TileSelector } from "../tileselector"
 
 export function PanmanObject(Material, Layout, Layers, Layer, Tile){
     const res = {
         id: GenerateId(),//important
         name: `Panman`,//important
         settingsoptions: [],//important
-        requirement(){return Tile !== Material && Tile.collision},//important
-        requirementMessage: 'for tiles only, needs a collision body!!!',//important
+        requirement(){return Tile !== Material && Tile.collision && Tile.sprite},//important
+        requirementMessage: 'for tiles only, needs a sprite & collision body!!!',//important
         toggle: true, // important
         offsetx: -(Tile.w / 2),
         offsety: -(Tile.h / 2),
         offsetw: Tile.w * 2,
         offseth: Tile.h * 2,
-        autopan: true,
+        inc: 2,
+        allowx: true,
+        allowy: true,
         variablesOfInterest: ['offsetx','offsety', 'offsetw', 'offseth', 'autopan', 'restrictToWindow', 'restrictToLayout'], //must, string, number, non-return function, boolean
         eventsOfInterest: [''],//must , function, only returns boolean
         left: [],
         top: [],
         bottom: [],
         right: [],
+        parallaxBundle: [],
         restrictToWindow: false,
         restrictToLayout: false,
         color: ` #ff000023`,
         mode: `input`,
+
+        //IMPORTANT
         open(){ //must
             this.loader = PluginLoader(Material, Layout, Tile, this, this.name)
             this.ui = Panman().ui(domextract(this.loader.ui.element).object.main, this, Material, Layout, Layers, Layer, Tile)
@@ -44,22 +50,6 @@ export function PanmanObject(Material, Layout, Layers, Layer, Tile){
             }
             this.variablesOfInterest.forEach(x=>data.object[x] = this[x])
             return data
-        },
-        remove(){//must
-            this.loader.remove()
-            Tile.nodes = Tile.nodes.filter(e=> e !== this) //delete this
-        },
-        load(){       
-            this.updateTileVars()
-            this.open()
-            EventHandler(window, '', 'keydown', (e)=>{
-                if(e.key === `ArrowUp`)Tile.collision.vy =-8
-                if(e.key === `ArrowLeft`)Tile.collision.vx =-4
-                if(e.key === `ArrowRight`)Tile.collision.vx = 4
-            })
-            EventHandler(window, '', 'keyup', (e)=>{
-                Tile.collision.vx = 0
-            })
         },
         updateTileVars(){
             Tile.setVariable({prop: this.name, nodeId: Tile.id})
@@ -86,7 +76,25 @@ export function PanmanObject(Material, Layout, Layers, Layer, Tile){
             })
             this.variablesOfInterest = newvars
         },
-        lerp(from , to, index){return from + (to - from) * index},
+        //Templates
+        createParallaxBundle(){
+            const obj = {
+                name,
+                tilestochangearray, 
+                multiplier: 1,
+            }
+            obj.set = ()=>{
+                if(this.mode === `input`){
+                    if(this[obj.arrayname].indexOf(obj) < 0) //not existing
+                    this[obj.arrayname].push(obj)
+                }else if(this.mode === `parallax`){
+                    if(this[`parallaxBundle`].indexOf(obj) < 0) //not existing
+                    this[`parallaxBundle`].push(obj)
+                }
+
+            }
+            this.ui.updateBundle()
+        },
         createBundle(name ='', tilestochangearray = [], arrayname='left', vars=[]){
             const obj = {
                 name,
@@ -94,7 +102,7 @@ export function PanmanObject(Material, Layout, Layers, Layer, Tile){
                 arrayname,
                 vars,
                 mode: `inc`,
-                inc:0,
+                inc:0, multiplier: 1,
                 addvar(vv){
                     const v = {...vv}
                     v.getinc = ()=> 0 //init inc
@@ -106,29 +114,26 @@ export function PanmanObject(Material, Layout, Layers, Layer, Tile){
                 },
                 call(){
                     this.vars.forEach(v=>{
-                        if(this.mode === `inc`){
-                            this.inc += res.lerp(this.inc, v.getinc(), 0.5) 
-                            // console.log(v.prop, this.inc, v.getinc())
-                            this.tilestochangearray.forEach(t=>{
-                                const arr = t.find('Tile', t.variables).subs
-                                arr.forEach(vv=>{
-                                    if(vv.prop === v.prop){
-                                        vv.set(v.get() + v.getinc())
-                                    }
-                                })
-                            })
-                        }
+                        this.inc += v.getinc()
+                        console.log(v.get() + this.inc)
+                        v.set(v.get() + this.inc)
                     })
                 },
             }
             obj.set = ()=>{
-                if(this[obj.arrayname].indexOf(obj) < 0) //not existing
-                this[obj.arrayname].push(obj)
+                if(this.mode === `input`){
+                    if(this[obj.arrayname].indexOf(obj) < 0) //not existing
+                    this[obj.arrayname].push(obj)
+                }else if(this.mode === `parallax`){
+                    if(this[`parallaxBundle`].indexOf(obj) < 0) //not existing
+                    this[`parallaxBundle`].push(obj)
+                }
+
             }
             this.ui.updateBundle(this, Tile)
             return obj
         },
-        //for this
+        //EVENTS
         onwindowcollide(){
             return (
                 this.onwindowright() ||
@@ -161,32 +166,72 @@ export function PanmanObject(Material, Layout, Layers, Layer, Tile){
             }
             return {overlapx, overlapy}
         },
-        draw({ctx}){
+
+        //DRAW
+        drawnormal({ctx}){
             ctx.fillStyle = this.color
             ctx.fillRect(this.x, this.y, this.w, this.h)
         },
-        resolveleft(){
-            Material.tx = ((Material.w - this.x) - Material.w) 
+        drawparallax({ctx,}){
+            // if(this.allowx){
+                this.parallaxBundle.forEach(Bundle=>{
+                    Bundle.tilestochangearray.forEach(tile=>{
+                        const t = tile.sprite
+                        ctx.drawImage(t.image, t.sx, t.sy, t.sw, t.sh, tile.x + tile.w , tile.y, tile.w, tile.h)
+                    })
+                })
+                this.drawnormal({ctx})
+                ctx.fillStyle = this.color
+                ctx.fillRect(this.x, this.y, this.w, this.h)
+                
+            // }
         },
+        //OFFSETS AND RESOLVES
+        offsetleft(){
+            Tile.x = (Tile.absx - this.x) - Material.tx
+
+        },
+        offsettop(){
+            // Tile.collision.vy = 0
+            Tile.y = (Tile.absy - this.y) - Material.ty
+        },
+        offsetright(){
+            Tile.x = Material.w - (Tile.w + (Tile.absx - this.x)) + Material.tx
+        },
+        offsetbottom(){
+            Tile.y = Material.h - (Tile.h + (Tile.absy - this.y)) + Material.ty
+        },
+        
         resolvetop(){
-            // console.log(this.getOverlap())
-            Material.ty = (Material.h - this.y) - Material.h 
+            if(!this.allowy)return
+            if(!this.onwindowtop())return
+            this.offsettop()
+            this.inc = -Tile.collision.vy
+            this.changeallvars('y')
         },
-        resolveright(){
-            Material.tx = ((Material.w - this.x) - Material.w) + (Material.w - this.w)
+        
+        resolveleft(){ 
+            if(!this.allowx)return
+            if(!this.onwindowleft())return
+            this.offsetleft()
+            this.inc = -Tile.collision.vx
+            this.changeallvars('x')
         },
         resolvebottom(){
-            Material.ty = ((Material.h - this.y) - Material.h) + (Material.h - this.h)
-
-            // if(this.getOverlap().overlapy > 0)
-            // Material.ty -= 1
+            if(!this.allowy)return
+            if(!this.onwindowbottom())return
+            this.offsetbottom()
+            this.inc = -Tile.collision.vy
+            this.changeallvars('y')
         },
-        updateautopan(){
-            if(this.mode !== `auto`)return
-            if(!this.onwindowcollide())return
-            // this.resolvetop()
-            // this.resolvebottom()
+        resolveright(){
+            if(!this.allowx)return
+            if(!this.onwindowright())return
+            this.offsetright()
+            this.inc = -Tile.collision.vx
+            this.changeallvars('x')
         },
+        
         updateDim(){
             this.x = Tile.absx + this.offsetx
             this.y = Tile.absy + this.offsety
@@ -203,7 +248,6 @@ export function PanmanObject(Material, Layout, Layers, Layer, Tile){
         resolvetoleft(){
             if(!this.onwindowleft())return
             this.callarray('left')
-            Material.tx += 5
 
         },
         resolvetotop(){
@@ -215,10 +259,52 @@ export function PanmanObject(Material, Layout, Layers, Layer, Tile){
             this.callarray('bottom')
             
         },
-        callarray(name){
-            this[name].forEach(bundle=>{
-                bundle.call()
-            })
+        
+        // update modes
+        updateautopan(){
+            if(this.mode !== `auto`)return
+            if(!this.onwindowcollide())return
+            this.resolveleft()
+            this.resolvetop()
+            this.resolvebottom()
+            this.resolveright()
+            this.draw = (props)=>{return this.drawnormal(props)}
+        },
+        updateparallax(){
+            if(this.mode !== `parallax`)return
+            if(!this.onwindowcollide())return
+            this.resolveleft()
+            this.resolvetop()
+            this.resolvebottom()
+            this.resolveright()
+
+            if(this.onwindowright()){
+                this.parallaxBundle.forEach(bundle=>{
+                    bundle.tilestochangearray.forEach(tile=>{
+                        if(tile.absx < -tile.absw){
+                            tile.absx = 0
+                            tile.x = 0
+                        }else
+                        tile.x += -Tile.collision.vx * bundle.multiplier
+                    
+                    })
+                })
+
+            }
+            if(this.onwindowleft()){
+                this.parallaxBundle.forEach(bundle=>{
+                    bundle.tilestochangearray.forEach(tile=>{
+                        if(tile.absx < -tile.absw){
+                            tile.absx = 0
+                            tile.x = 0
+                        }else
+                        tile.x += -Tile.collision.vx * bundle.multiplier
+                    
+                    })
+                })
+
+            }
+
         },
         assigntiles(){
             if(this.mode === `input`){
@@ -226,17 +312,63 @@ export function PanmanObject(Material, Layout, Layers, Layer, Tile){
                 this.resolvetobottom()
                 this.resolvetoleft()
                 this.resolvetoright()
+
             }
             
         },
+
+        //LOAD
+        remove(){//must
+            this.loader.remove()
+            Tile.nodes = Tile.nodes.filter(e=> e !== this) //delete this
+        },
+        load(){       
+            this.updateTileVars()
+            this.open()
+            this.draw = this.drawnormal
+            EventHandler(window, '', 'keydown', (e)=>{
+                if(e.key === `ArrowUp`)Tile.collision.vy =-8
+                if(e.key === `ArrowLeft`)Tile.collision.vx =-4
+                if(e.key === `ArrowRight`)Tile.collision.vx = 4
+            })
+            EventHandler(window, '', 'keyup', (e)=>{
+                Tile.collision.vx = 0
+            })
+        },
+
+
+        //UPDATES
         update(props){
             this.updateDim()
-            this.draw(props)
+            this.draw = (this.mode === `parallax`)?this.drawparallax : this.drawnormal
+            this?.draw(props) 
             this?.ui?.update({...this, ...props})
-            this.updateautopan()
             this.assigntiles()
-            // console.log(this.onveiwportcollide(), this.getOverlap())
+            this.updateautopan()
+            this.updateparallax()
         },
+
+
+
+        //UTILS
+        callarray(name){
+            this[name].forEach(bundle=>{
+                bundle.call()
+            })
+        },
+        changeallvars(prop){
+            Material.layouts.currentArray.flat().forEach(layout=>{
+                layout.layers.array.forEach(layer=>{
+                    layer.tiles.forEach(tile=>{
+                        if(tile.id !== Tile.id)
+                        tile[prop] += this.inc
+                    })
+                })
+            })
+        },
+        lerp(from , to, index){return from + (to - from) * index},
+
+
     }
     if(!res.requirement()){
         return undefined

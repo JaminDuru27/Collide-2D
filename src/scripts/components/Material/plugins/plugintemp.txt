@@ -5,6 +5,7 @@ export function RocketMan(){
     const res= {
         name: 'RocketMan',
         style(){return``},
+        canvasstyle(){return ``},
         togglestyle(){return `width: .5rem;height: .5rem;outline: 2px solid grey;background: #7e779e;position: absolute;left: 0.5rem;top: .5rem;border-radius: 50%;outline-offset: .1rem;`},
         inputstyle(){return`width: 50%;color: #fff;background: #ffffff21;border: 1px solid #ffffff21;border-radius: .5rem;margin-left: .5rem;padding: .1rem;`},
         
@@ -81,12 +82,22 @@ export function RocketMan(){
         ui(to, AnimanObject, Material, Layout, Layers, Layer, Tile){
             this.element = document.createElement(`div`)
             this.element.setAttribute(`style`, this.style())
-            this.element.innerHTML += ``
+            this.element.innerHTML += `
+                <canvas class='canvas' style='${this.canvasstyle()}'></canvas>
+            `
             to.append(this.element)
             domextract(this.element, 'classname',this)
             this.setTogglebtn(RocketManObject)
             this.updateToggle(RocketManObject)
+            this.setupcanvas()
             return this
+        },
+        setupcanvas(){
+            this.canvas = this.dom.canvas
+            this.canvas.width = this.canvas.clientWidth
+            this.canvas.height = this.canvas.clientHeight
+            this.ctx = this.canvas.getContext(`2d`)
+            this.clear = ()=>this.ctx.clearRect(0,0, this.canvas.width, this.canvas.height)
         },
         setTogglebtn(obj){
             if(this.togglebtn)this.togglebtn.remove()
@@ -101,6 +112,7 @@ export function RocketMan(){
             }
             this.element.append(this.togglebtn)
         },
+        
         updateToggle(obj){
             if(!obj.toggle){
                 if(this.togglediv)this.togglediv.remove()
@@ -117,7 +129,8 @@ export function RocketMan(){
             }
         },
         update(props){
-
+            if(!this.ctx)return
+            this.clear()
         }
     }
 
